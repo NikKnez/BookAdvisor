@@ -2,3 +2,4 @@ Flask
 Flask-Mail
 pymongo
 python-dotenv
+bcrypt

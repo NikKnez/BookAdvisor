@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="718dab08-0336-49ec-ade8-95438b477fca" name="Changes" comment="Modified app.py and workspace.xml">
-      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+    <list default="true" id="718dab08-0336-49ec-ade8-95438b477fca" name="Changes" comment="Created recommendation.txt for deployment">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -172,7 +172,15 @@
       <option name="project" value="LOCAL" />
       <updated>1717496533128</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Created recommendation.txt for deployment">
+      <option name="closed" value="true" />
+      <created>1717497214900</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1717497214900</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -182,6 +190,7 @@
     <MESSAGE value="Modified nyt.py to fetch direct NYT API" />
     <MESSAGE value="Modified app.py, recommender.py, user_auth.py and workspace.xml" />
     <MESSAGE value="Modified app.py and workspace.xml" />
-    <option name="LAST_COMMIT_MESSAGE" value="Modified app.py and workspace.xml" />
+    <MESSAGE value="Created recommendation.txt for deployment" />
+    <option name="LAST_COMMIT_MESSAGE" value="Created recommendation.txt for deployment" />
   </component>
 </project>
