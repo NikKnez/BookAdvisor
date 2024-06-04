@@ -48,8 +48,8 @@ fi
 _OLD_VIRTUAL_PATH="$PATH"
 PATH="$VIRTUAL_ENV/Scripts:$PATH"
 export PATH
-export API_KEY=AIzaSyD2C_hROQx4bBYGMcfKrHZblOgMbkjlirA
-export NYT_API_KEY=6mz8aauAMDTc1N0xGARg0ZV301qyUGJ8
+export API_KEY=YOUR_GOOGLE_API_KEY
+export NYT_API_KEY=YOUR_NYT_API_KEY
 
 # unset PYTHONHOME if set
 # this will fail if PYTHONHOME is set to the empty string (which is bad anyway)

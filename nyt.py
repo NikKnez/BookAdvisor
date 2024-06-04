@@ -38,7 +38,7 @@ def nyt_get_data():
 
     # Make an API call to the NYT API
     nyt_response = requests.get(
-        url="https://api.nytimes.com/svc/books/v3/lists/best-sellers/history.json?api-key=6mz8aauAMDTc1N0xGARg0ZV301qyUGJ8"
+        url="https://api.nytimes.com/svc/books/v3/lists/best-sellers/history.json?api-key=YOUR_NYT_API_KEY"
     )
 
     # Check if book was included in an NYT bestsellers list
@@ -89,7 +89,7 @@ def nyt_get_data_short():
 
     # Make an API call to the NYT API
     nyt_response = requests.get(
-        url="https://api.nytimes.com/svc/books/v3/lists/best-sellers/history.json?api-key=6mz8aauAMDTc1N0xGARg0ZV301qyUGJ8" + isbn
+        url="https://api.nytimes.com/svc/books/v3/lists/best-sellers/history.json?api-key=YOUR_NYT_API_KEY" + isbn
 
     )
 
@@ -130,7 +130,7 @@ def nyt_get_current_recommendations():
 
     # Make an API call to the NYT API
     nyt_response = requests.get(
-        url="https://api.nytimes.com/svc/books/v3/lists/full-overview.json?api-key=6mz8aauAMDTc1N0xGARg0ZV301qyUGJ8"
+        url="https://api.nytimes.com/svc/books/v3/lists/full-overview.json?api-key=YOUR_NYT_API_KEY"
     )
     results = nyt_response.json().get("results", {}).get("lists", [])
 
