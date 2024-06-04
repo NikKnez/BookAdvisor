@@ -1,21 +1,11 @@
-from flask import Blueprint, request, current_app
-from flask import jsonify
-import bcrypt
-import pymongo
+from flask import Blueprint, request, jsonify, current_app
 from bson.objectid import ObjectId
-import re
 from user_auth import token_val
-from datetime import datetime, date
-import bson
 import pandas as pd
-import numpy as np
-from sklearn.feature_extraction import text
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from nltk.corpus import stopwords
-import nltk
 from rake_nltk import Rake
 from search import search_books
-
 
 RECOMMENDER = Blueprint("rec", __name__)
 
@@ -29,16 +19,6 @@ def get_book_info(book):
     if book["authors"] != "No author available":
         resp += " " + book["authors"]
     return resp
-
-
-"""
-Params: token
-Func: Uses the most recent book that was marked as read to recommend a similar book. Weights the user's rating of said book and uses the books description, title and genre to generate recommendations
-Return: List of 10 recommendations
-
-Main recommendation logic taken from: https://thecleverprogrammer.com/2022/07/19/book-recommendation-system-using-python/
-
-"""
 
 
 @RECOMMENDER.route("/rec", methods=["GET"])
@@ -67,7 +47,7 @@ def gen_recomm():
         {"book_id": recent_read["book_id"]}
     )
 
-    # use rake-nltk to extract keywords from book info
+    # Use rake-nltk to extract keywords from book info
     r = Rake()
 
     if recent_read["summary"] == "No summary available":
@@ -83,55 +63,30 @@ def gen_recomm():
         main_word, current_app.config["DATABASE"]["books"]
     )
 
-    # Remove already read books from list and books with identical titles
-
+    # Filter potential recommendations
     books_read_itr = current_app.config["DATABASE"]["books_read"].find(
         {"user_id": user_id}, {"_id": 0, "book_id": 1}
     )
-    books_read = []
-    for book in books_read_itr:
-        books_read.append(book["book_id"])
+    books_read = [book["book_id"] for book in books_read_itr]
 
-    tmp = []
-    print(potential_recs)
+    filtered_recs = []
+    for book in potential_recs:
+        if book["book_id"] not in books_read and book["title"] not in [rec["title"] for rec in filtered_recs]:
+            filtered_recs.append(book)
 
-    for book1 in potential_recs:
-        removed = False
-
-        # Remove books marked as read by checking to see if their book id or their titles match
-        for ids in books_read:
-            if book1["book_id"] == ids:
-                removed = True
-                break
-
-        # Removes books that have identical ids
-        count = 0
-        for book2 in potential_recs:
-            if book1["book_id"] == book2["book_id"]:
-                count += 1
-
-        if count >= 2:
-            removed = True
-
-        if not removed:
-            tmp.append(book1)
-
-    potential_recs = tmp
-
-    # Add most recently read book to rec in order to calculate similarity of other books to it
-    potential_recs.append(recent_read)
+    # Append the most recently read book once
+    filtered_recs.append(recent_read)
 
     # Create "info" field for each book
-    for book in potential_recs:
+    for book in filtered_recs:
         book["info"] = get_book_info(book)
 
     # Calculate similarity ranking between all books
-    data = pd.DataFrame.from_list(potential_recs)
+    data = pd.DataFrame(filtered_recs)
     data = data[["title", "info", "book_id"]]
-    # data = data.dropna()
 
     feature = data["info"].tolist()
-    tfidf = text.TfidfVectorizer(stop_words="english")
+    tfidf = TfidfVectorizer(stop_words="english")
     tfidf_matrix = tfidf.fit_transform(feature)
 
     similarity = cosine_similarity(tfidf_matrix, tfidf_matrix)
@@ -139,7 +94,6 @@ def gen_recomm():
     indices = pd.Series(data.index, index=data["book_id"]).drop_duplicates()
 
     # Perform recommendation logic
-    # A book will be recommended based on the books title, genre, authors and description
     index = indices[recent_read["book_id"]]
     sim_scores = list(enumerate(similarity[index]))
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
@@ -152,37 +106,10 @@ def gen_recomm():
     non_duplicate_recs = []
 
     for rec in recs:
-        for book in potential_recs:
+        for book in filtered_recs:
             if book["book_id"] == rec:
                 non_duplicate_recs.append(book)
                 break
 
-    # Initialize a set to store unique book titles
-    unique_titles = set()
-
-    # List to store non-duplicate recommended books
-    non_duplicate_recs_filtered = []
-
-    # Iterate through the recommended books
-    for book in non_duplicate_recs:
-        # Check if the title of the book is already in the set of unique titles
-        if book["title"] not in unique_titles:
-            # If the title is not in the set, add it to the set and append the book to the non-duplicate list
-            unique_titles.add(book["title"])
-            non_duplicate_recs_filtered.append(book)
-
-    # Update the response with the non-duplicate recommended books
-    resp = non_duplicate_recs_filtered
-
-    resp = []
-    for rec in recs:
-        for book in potential_recs:
-            if book["book_id"] == rec:
-                resp.append(book)
-                break
-
-    return jsonify({"rec": resp}), 200
-
-
-# Problem the list of books thats being returned has way too many of the same book!!!
-# Have to remove books that have the same title as an already read book!
+    # Return the final list of recommendations
+    return jsonify({"rec": non_duplicate_recs}), 200
