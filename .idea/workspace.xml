@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="718dab08-0336-49ec-ade8-95438b477fca" name="Changes" comment="Modified nyt.py to fetch direct NYT API">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="718dab08-0336-49ec-ade8-95438b477fca" name="Changes" comment="Modified app.py, recommender.py, user_auth.py and workspace.xml">
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recommender.py" beforeDir="false" afterPath="$PROJECT_DIR$/recommender.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user_auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/user_auth.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -158,7 +155,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710768148478</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Modified app.py, recommender.py, user_auth.py and workspace.xml">
+      <option name="closed" value="true" />
+      <created>1717496173042</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1717496173042</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -166,6 +171,7 @@
     <MESSAGE value="Initial commit" />
     <MESSAGE value="Modified files" />
     <MESSAGE value="Modified nyt.py to fetch direct NYT API" />
-    <option name="LAST_COMMIT_MESSAGE" value="Modified nyt.py to fetch direct NYT API" />
+    <MESSAGE value="Modified app.py, recommender.py, user_auth.py and workspace.xml" />
+    <option name="LAST_COMMIT_MESSAGE" value="Modified app.py, recommender.py, user_auth.py and workspace.xml" />
   </component>
 </project>
