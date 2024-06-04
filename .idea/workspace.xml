@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="718dab08-0336-49ec-ade8-95438b477fca" name="Changes" comment="Modified app.py">
+    <list default="true" id="718dab08-0336-49ec-ade8-95438b477fca" name="Changes" comment="Modified app.py and requirements.txt, added Procfile for deployment">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -219,7 +220,15 @@
       <option name="project" value="LOCAL" />
       <updated>1717500218448</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Modified app.py and requirements.txt, added Procfile for deployment">
+      <option name="closed" value="true" />
+      <created>1717501383277</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1717501383277</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -232,6 +241,7 @@
     <MESSAGE value="Created recommendation.txt for deployment" />
     <MESSAGE value="Modified recommendation.txt" />
     <MESSAGE value="Modified app.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="Modified app.py" />
+    <MESSAGE value="Modified app.py and requirements.txt, added Procfile for deployment" />
+    <option name="LAST_COMMIT_MESSAGE" value="Modified app.py and requirements.txt, added Procfile for deployment" />
   </component>
 </project>
