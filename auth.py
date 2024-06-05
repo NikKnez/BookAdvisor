@@ -9,7 +9,13 @@ from user_auth import token_gen, token_val, get_token_id
 from bson.objectid import ObjectId
 from validate_email import validate_email
 
+
 AUTH = Blueprint("auth", __name__)
+
+"""
+Params: email_address, username, first_name, last_name, password
+Return: token or error message
+"""
 
 
 @AUTH.route("/auth/register", methods=["POST"])
@@ -23,11 +29,11 @@ def auth_register():
     users = current_app.config["DATABASE"]["users"]
 
     if (
-            len(email_address) < 1
-            or len(username) < 1
-            or len(first_name) < 1
-            or len(last_name) < 1
-            or len(password) < 1
+        len(email_address) < 1
+        or len(username) < 1
+        or len(first_name) < 1
+        or len(last_name) < 1
+        or len(password) < 1
     ):
         return (
             jsonify(
@@ -86,74 +92,128 @@ def auth_register():
     return token
 
 
+"""
+Params: username
+Return: boolean
+"""
+
+
 def validate_username(username):
     pattern = r"^[a-zA-Z0-9_]+$"
+
     if not re.match(pattern, username):
         return False
+
     return True
+
+
+"""
+Params: password
+Return: boolean (indicating either valid or invalid)
+"""
 
 
 def validate_password(password):
     if len(password) < 8:
         return False
+
     if not re.search("[0-9]", password):
         return False
+
     if not re.search("[A-Z]", password):
         return False
+
     if not re.search("[a-z]", password):
         return False
+
     if not re.search("[^A-Za-z0-9]", password):
         return False
+
     return True
+
+
+"""
+Params: email_address or username, password
+Return: token or error message
+"""
 
 
 @AUTH.route("/auth/login", methods=["POST"])
 def auth_login():
-    print("Headers:", request.headers)
-    print("Content-Type:", request.content_type)
-    print("JSON Data:", request.get_json())
+    data = request.get_json()
+    print("Received data:", data)
 
-    if request.is_json:
-        username = request.get_json().get("username")
-        email_address = request.get_json().get("email_address")
-        password = request.get_json().get("password")
+    username = data.get("username")
+    email_address = data.get("email_address")
+    password = data.get("password")
 
-        users = current_app.config["DATABASE"]["users"]
+    if not username and not email_address:
+        return jsonify({"message": "Username or email address is required"}), 400
 
-        user = users.find_one({"username": username}) or users.find_one({"email_address": email_address})
+    users = current_app.config["DATABASE"]["users"]
 
-        if not user:
-            return jsonify({"message": "User not registered"}), 400
+    # Try to find the user by username if provided
+    user = None
+    if username:
+        user = users.find_one({"username": username})
+        print("User by username:", user)
 
-        salt = user["salt"]
-        hashed = bcrypt.hashpw(password.encode("utf-8"), salt)
+    # If not found, try to find the user by email address
+    if not user and email_address:
+        user = users.find_one({"email_address": email_address})
+        print("User by email:", user)
 
-        if hashed != user["password"]:
-            return jsonify({"message": "Incorrect password"}), 400
+    if not user:
+        print("No user found for username:", username, "and email_address:", email_address)
+        return jsonify({"message": "User not registered"}), 400
 
-        token = get_token_id(user["_id"])
-        return jsonify({"token": token}), 200
-    else:
-        return jsonify({"message": "Invalid request format"}), 415
+    salt = user["salt"]
+    hashed = bcrypt.hashpw(password.encode("utf-8"), salt)
+    print("Hashed password:", hashed)
+    print("Stored password:", user["password"])
+
+    if hashed != user["password"]:
+        return jsonify({"message": "Incorrect password"}), 400
+
+    token = get_token_id(user["_id"])
+    return jsonify({"token": token}), 200
+
+
+"""
+Params: token
+Return: boolean (indicating success or error)
+"""
 
 
 @AUTH.route("/auth/logout", methods=["POST"])
 def auth_logout():
     token = request.get_json().get("token")
-    if token_val(token) is None:
+
+    if token_val(token) == None:
         return False
+
     return True
+
+
+"""
+Params: email_address or username
+Return: boolean (indicating success or error)
+"""
 
 
 @AUTH.route("/auth/recover", methods=["POST"])
 def auth_recover():
     user_email = request.get_json()["email"]
+
+    # Check if user_email is in the database
     db = current_app.config["DATABASE"]
     print(user_email)
+
     data = db["users"].find_one({"email_address": user_email})
-    if data is None:
+    if data == None:
         return jsonify({"message": "Invalid user"}), 400
 
+    # If they are then generate a token a
     token = token_gen(
         data["_id"],
         data["username"],
@@ -172,8 +232,7 @@ def auth_recover():
         sender=current_app.config["MAIL_USERNAME"],
         recipients=[user_email],
     )
-    msg.html = (f"<b> Hello {data['first_name']}\n</b> Please click on the following link in order to reset your "
-                f"password: <a href={recover_url}>{recover_url}</a>")
+    msg.html = f"<b> Hello {data['first_name']}\n</b> Please click on the following link in order to reset your password: <a href={recover_url}>{recover_url}</a>"
 
     try:
         mail.send(msg)
@@ -190,7 +249,9 @@ def auth_forget_password():
     pwd = r["password"]
 
     users_db = current_app.config["DATABASE"]["users"]
+
     user = users_db.find_one({"username": "edelgard"})
+
     data = token_val(token)
 
     if data == None:
@@ -199,17 +260,24 @@ def auth_forget_password():
     if not validate_password(pwd):
         return jsonify({"message": "Invalid password format"}), 400
 
+    # Find user corresponding to the tokens
+    # users = db['users']
     users = current_app.config["DATABASE"]["users"]
+
     user = users.find_one({"username": data["username"]})
 
-    if user is None:
+    if user == None:
         return jsonify({"message": "Invalid token"}), 403
 
+    # Reset the users password
     salt = user["salt"]
     hashed = bcrypt.hashpw(pwd.encode("utf-8"), salt)
 
     query = {"_id": ObjectId(data["_id"])}
     update = {"$set": {"password": hashed}}
+
     users.update_one(query, update)
+
+    # Send confirmation message
 
     return jsonify({"message": "Password reset"}), 200

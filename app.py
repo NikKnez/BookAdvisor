@@ -40,7 +40,7 @@ if __name__ == "__main__":
     # MongoDB Atlas connection
     try:
         # myclient = pymongo.MongoClient("mongodb://localhost:27017/")
-        myclient = pymongo.MongoClient("mongodb+srv://nknezevic07:N!kol%4007@cluster0.lknjmwl.mongodb.net/books_db")
+        myclient = pymongo.MongoClient("mongodb+srv://nknezevic07:N!kol%4007@cluster0.lknjmwl.mongodb.net/db")
         app.config["DATABASE"] = myclient["db"]
         print("Connected successfully to MongoDB Atlas")
     except pymongo.errors.ConnectionError as e:
