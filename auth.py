@@ -140,43 +140,32 @@ Return: token or error message
 
 @AUTH.route("/auth/login", methods=["POST"])
 def auth_login():
-    data = request.get_json()
-    print("Received data:", data)
-
-    username = data.get("username")
-    email_address = data.get("email_address")
-    password = data.get("password")
-
-    if not username and not email_address:
-        return jsonify({"message": "Username or email address is required"}), 400
+    username = request.get_json().get("username")
+    email_address = request.get_json().get("email_address")
+    password = request.get_json().get("password")
 
     users = current_app.config["DATABASE"]["users"]
 
-    # Try to find the user by username if provided
-    user = None
-    if username:
-        user = users.find_one({"username": username})
-        print("User by username:", user)
+    # try to use username to login
+    user = users.find_one({"username": username})
 
-    # If not found, try to find the user by email address
-    if not user and email_address:
-        user = users.find_one({"email_address": email_address})
-        print("User by email:", user)
-
+    # if it fails, then we try to use email to login
     if not user:
-        print("No user found for username:", username, "and email_address:", email_address)
+        user = users.find_one({"email_address": email_address})
+
+    # if it still fails, then we return an error message
+    if not user:
         return jsonify({"message": "User not registered"}), 400
 
     salt = user["salt"]
     hashed = bcrypt.hashpw(password.encode("utf-8"), salt)
-    print("Hashed password:", hashed)
-    print("Stored password:", user["password"])
 
     if hashed != user["password"]:
         return jsonify({"message": "Incorrect password"}), 400
 
     token = get_token_id(user["_id"])
-    return jsonify({"token": token}), 200
+
+    return token
 
 
 """
