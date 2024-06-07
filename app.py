@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask
 from flask_mail import Mail, Message
 from auth import AUTH
 from user import USER
@@ -14,7 +14,7 @@ import requests
 import pymongo
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app)
 
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
 app.config["MAIL_PORT"] = 465
@@ -36,17 +36,10 @@ app.register_blueprint(NYT)
 
 if __name__ == "__main__":
     # Connect to MongoDB running on localhost without authentication
-    # myclient = pymongo.MongoClient("mongodb://localhost:27017/")
-    # MongoDB Atlas connection
-    try:
-        # myclient = pymongo.MongoClient("mongodb://localhost:27017/")
-        myclient = pymongo.MongoClient("mongodb+srv://nknezevic07:N!kol%4007@cluster0.lknjmwl.mongodb.net/db")
-        app.config["DATABASE"] = myclient["db"]
-        print("Connected successfully to MongoDB Atlas")
-    except pymongo.errors.ConnectionError as e:
-        print("Could not connect to MongoDB Atlas:", e)
+    myclient = pymongo.MongoClient("mongodb+srv://nknezevic07:N!kol%4007@cluster0.lknjmwl.mongodb.net/db")
 
     # Set the database to use
     app.config["DATABASE"] = myclient["db"]
 
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    # Run the Flask application
+    app.run(host="127.0.0.1", port=5000, debug=True)

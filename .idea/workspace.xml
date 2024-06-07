@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="718dab08-0336-49ec-ade8-95438b477fca" name="Changes" comment="Modified auth.py">
-      <change afterPath="$PROJECT_DIR$/mongoCheck.py" afterDir="false" />
+    <list default="true" id="718dab08-0336-49ec-ade8-95438b477fca" name="Changes" comment="Modified auth.py, app.py, nyt.py and user_auth.py">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nyt.py" beforeDir="false" afterPath="$PROJECT_DIR$/nyt.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user_auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/user_auth.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -272,7 +268,15 @@
       <option name="project" value="LOCAL" />
       <updated>1717579062924</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Modified auth.py, app.py, nyt.py and user_auth.py">
+      <option name="closed" value="true" />
+      <created>1717589325640</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1717589325640</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -287,6 +291,7 @@
     <MESSAGE value="Modified app.py and requirements.txt, added Procfile for deployment" />
     <MESSAGE value="Modified app.py" />
     <MESSAGE value="Modified auth.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="Modified auth.py" />
+    <MESSAGE value="Modified auth.py, app.py, nyt.py and user_auth.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="Modified auth.py, app.py, nyt.py and user_auth.py" />
   </component>
 </project>

@@ -72,7 +72,6 @@ Return None if id provdided does not exist
 
 def get_token_id(id):
     # Query database for user info
-    # myclient = pymongo.MongoClient("mongodb://localhost:27017/")
     myclient = pymongo.MongoClient("mongodb+srv://nknezevic07:N!kol%4007@cluster0.lknjmwl.mongodb.net/db")
 
     db = myclient["db"]
@@ -107,6 +106,6 @@ def get_token_id(id):
         return compact_jws
 
 
-#if __name__ == "__main__":
-    #token = token_gen(5, "silverhand", "John", "Silver", "user@yahoo.com", False)
-    #print(token_val(token))
+if __name__ == "__main__":
+    token = token_gen(5, "silverhand", "John", "Silver", "user@yahoo.com", False)
+    print(token_val(token))
