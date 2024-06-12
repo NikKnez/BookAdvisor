@@ -17,4 +17,3 @@ scikit-learn
 rake-nltk
 validate_email
 flask-cors
-gunicorn==20.1.0
